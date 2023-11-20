@@ -5,8 +5,8 @@
 
 CREATE TABLE VM_UpdateTempoBiglietti(
 	Tipo varchar(30) NOT NULL,
-	Mese integer NOT NULL,
-	Semestre integer NOT NULL,
+	Mese date NOT NULL,
+	Semestre date NOT NULL,
 	Anno integer NOT NULL,
 	ModAcquisto varchar(50) NOT NULL,
 	NumBigliettiPerTipoMeseModalità integer NOT NULL,
@@ -19,7 +19,8 @@ CREATE TABLE VM_UpdateTempoBiglietti(
 	Popolazione tabella
 */
 
-INSERT INTO VM_UpdateTempoBiglietti(Tipo, Mese, Semestre, Anno, ModAcquisto, NumBigliettiPerTipoMeseModalità, EntrataPerTipoMeseModalità)
+INSERT INTO VM_UpdateTempoBiglietti(Tipo, Mese, Semestre, Anno,
+	ModAcquisto, NumBigliettiPerTipoMeseModalità, EntrataPerTipoMeseModalità)
 SELECT 	Tipo, Mese, Semestre, Anno, ModAcquisto,
 			SUM(Quantità) as NumBigliettiPerTipoMeseModalità,
 			SUM(Quantità * Costo) as EntrataPerTipoMeseModalità
@@ -38,7 +39,7 @@ AFTER INSERT ON BIGLIETTO
 FOR EACH ROW
 DECLARE
 	N number;
-	S integer;
+	S date;
 	A integer;
 BEGIN
 	
@@ -47,7 +48,7 @@ BEGIN
 	from BIGLIETTO
 	where	Tipo = :NEW.Tipo AND
 			Mese = :NEW.Mese AND
-			ModAcquisto = :NEW.ModAcquisto
+			ModAcquisto = :NEW.ModAcquisto;
 	
 	if(N > 0) then
 		-- Record presente: aggiornamento vista
@@ -56,17 +57,18 @@ BEGIN
 			EntrataPerTipoMeseModalità = EntrataPerTipoMeseModalità + :NEW.Quantità * :NEW.Costo
 		where	Tipo = :NEW.Tipo AND
 				Mese = :NEW.Mese AND
-				ModAcquisto = :NEW.ModAcquisto
+				ModAcquisto = :NEW.ModAcquisto;
 	
 	else
 		-- Record assente
 		-- Ricavo semestre ed anno corrispondenti al record inserito
 		select Semestre, Anno into (S, A)
 		from TEMPO
-		where CodT = :NEW.CodT
+		where CodT = :NEW.CodT;
 	
 		-- Inserimento record corrispondente in vista
-		insert into VM_UpdateTempoBiglietti(Tipo, Mese, Semestre, Anno, ModAcquisto, NumBigliettiPerTipoMeseModalità, EntrataPerTipoMeseModalità)
+		insert into VM_UpdateTempoBiglietti(Tipo, Mese, Semestre, Anno,
+				ModAcquisto, NumBigliettiPerTipoMeseModalità, EntrataPerTipoMeseModalità)
 			value(:NEW.Tipo, :NEW.Mese, S, A, :NEW.ModAcquisto, :NEW.Quantità, :NEW.Quantità * :NEW.Costo);
 	
 	end if;

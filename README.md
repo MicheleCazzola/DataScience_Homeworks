@@ -10,5 +10,7 @@ Homeworks for "Data science and database technology", a.a. 2023/2024
   
 **Data di pubblicazione**  
 15 novembre 2023  
-**Data di consegna**  
+**Data di scadenza**  
 28 novembre 2023  
+**Data di consegna**  
+TBD  

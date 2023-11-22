@@ -39,15 +39,21 @@ AFTER INSERT ON BIGLIETTO
 FOR EACH ROW
 DECLARE
 	N number;
+	M date;
 	S date;
 	A integer;
 BEGIN
+
+	-- Get informazioni su mese
+	select Mese into M
+	from TEMPO
+	where IdTempo = :NEW.IdTempo
 	
 	-- Check esistenza record in BIGLIETTO
 	select count(*) into N
 	from BIGLIETTO
 	where	Tipo = :NEW.Tipo AND
-			Mese = :NEW.Mese AND
+			Mese = M AND
 			ModAcquisto = :NEW.ModAcquisto;
 	
 	if(N > 0) then
@@ -56,7 +62,7 @@ BEGIN
 		set NumBigliettiPerTipoMeseModalità = NumBigliettiPerTipoMeseModalità + :NEW.Quantità,
 			EntrataPerTipoMeseModalità = EntrataPerTipoMeseModalità + :NEW.Quantità * :NEW.Costo
 		where	Tipo = :NEW.Tipo AND
-				Mese = :NEW.Mese AND
+				Mese = M AND
 				ModAcquisto = :NEW.ModAcquisto;
 	
 	else
@@ -69,7 +75,7 @@ BEGIN
 		-- Inserimento record corrispondente in vista
 		insert into VM_UpdateTempoBiglietti(Tipo, Mese, Semestre, Anno,
 				ModAcquisto, NumBigliettiPerTipoMeseModalità, EntrataPerTipoMeseModalità)
-			value(:NEW.Tipo, :NEW.Mese, S, A, :NEW.ModAcquisto, :NEW.Quantità, :NEW.Quantità * :NEW.Costo);
+			value(:NEW.Tipo, M, S, A, :NEW.ModAcquisto, :NEW.Quantità, :NEW.Quantità * :NEW.Costo);
 	
 	end if;
 	

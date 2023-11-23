@@ -28,7 +28,7 @@ GROUP BY Tipo, Mese, Anno
 */
 
 SELECT	NomeMuseo, Tipo,
-		AVG(Quantità * Costo) as RicavoMedioPerBiglietto,
+		SUM(Quantità * Costo) / SUM(Quantità) as RicavoMedioPerBiglietto,
 		100 * SUM(Quantità * Costo) / SUM(SUM(Quantità * Costo))
 			OVER (PARTITION BY Categoria, Tipo) as PercRicavoSuTotalePerCategoriaETipo,
 		RANK() OVER (	PARTITION BY Tipo

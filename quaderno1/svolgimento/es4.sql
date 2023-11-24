@@ -47,7 +47,7 @@ BEGIN
 	-- Get informazioni su mese
 	select Mese into M
 	from TEMPO
-	where IdTempo = :NEW.IdTempo
+	where CodT = :NEW.CodT;
 	
 	-- Check esistenza record in vista
 	select count(*) into N

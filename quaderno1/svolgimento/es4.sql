@@ -49,9 +49,9 @@ BEGIN
 	from TEMPO
 	where IdTempo = :NEW.IdTempo
 	
-	-- Check esistenza record in BIGLIETTO
+	-- Check esistenza record in vista
 	select count(*) into N
-	from BIGLIETTO
+	from VM_UpdateTempoBiglietti
 	where	Tipo = :NEW.Tipo AND
 			Mese = M AND
 			ModAcquisto = :NEW.ModAcquisto;

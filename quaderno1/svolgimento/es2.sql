@@ -12,7 +12,7 @@ SELECT 	Tipo, Mese,
 											ORDER BY Mese
 											ROWS UNBOUNDED PRECEDING
 										) as EntrateCumulativeAnnuali,
-		100 * SUM(Quantità * Costo) / SUM(SUM(Quantità * Costo))
+		100 * SUM(Quantità) / SUM(SUM(Quantità))
 			OVER (PARTITION BY Mese) as PercTipoBigliettiSuTotaleMese											
 FROM BIGLIETTO B, TEMPO T
 WHERE B.CodT = T.CodT

@@ -29,3 +29,16 @@ Homeworks for "Data science and database technology", a.a. 2023/2024
 5 dicembre 2023  
 **Data di consegna**  
 4 dicembre 2023    
+
+### Quaderno 3: ottimizzatore Oracle
+**Argomenti**  
+1. Scrittura albero relazionale della query indicata e discussione dell'anticipo delle clausole GROUP BY
+2. Ottimizzazione del piano di esecuzione, definendo eventuali strutture fisiche accessorie e specificando  
+   le scelte effettuate per ogni operazione
+  
+**Data di pubblicazione**  
+7 dicembre 2023  
+**Data di scadenza**  
+21 dicembre 2023   
+**Data di consegna**  
+TBD      

@@ -1,0 +1,12 @@
+GROUP BY SO.Sid
+Opportuno se si effettua(2-4): GB((IP JOIN SO)) JOIN S -> Permette di diminuire la cardinalità della
+outer table nella seconda join, effettuata con nested loop, di un fattore 400
+Non possibile se si effettua(1-3): IP JOIN (SO JOIN S)
+GROUP BY SP.Eid
+Non opportuno in configurazioni 3-4: la GB NO HASH, se anticipata (sul ramo sx), dovrebbe diventare una 
+GB HASH, avente costo superiore; inoltre, in tal caso la HASH JOIN avrebbe lo stesso costo, in quanto i
+bucket di join sono ricalcolati anche in presenza di bucket di group by. Inoltre, il vantaggio causato
+dalla GROUP BY consisterebbe in una riduzione del numero di tuple di un fattore 10: esso, per la presenza
+di una HASH JOIN successiva, non comportebbe una riduzione di costo sufficientemente significativa (come
+nel caso di una NESTED LOOP JOIN) da giustificare l'aumento del costo di generazione dei bucket.
+Non possibile in configurazioni 1-2

@@ -8,7 +8,7 @@ GB HASH, avente costo superiore; inoltre, in tal caso la HASH JOIN avrebbe lo st
 bucket di join sono ricalcolati anche in presenza di bucket di group by. Inoltre, il vantaggio causato
 dalla GROUP BY consisterebbe in una riduzione del numero di tuple di un fattore 10: esso, per la presenza
 di una HASH JOIN successiva, non comportebbe una riduzione di costo sufficientemente significativa (come
-nel caso di una NESTED LOOP JOIN) da giustificare l'aumento del costo di generazione dei bucket.
+invece sarebbe nel caso di una NESTED LOOP JOIN) da giustificare l'aumento del costo di generazione dei bucket.
 Non possibile in configurazioni 1-2
 
 INIZIALMENTE, SI SCEGLIE LA CONFIGURAZIONE 2 PER NESTED LOOPS CON TABELLE INFERIORI

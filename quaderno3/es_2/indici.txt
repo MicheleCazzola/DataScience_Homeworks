@@ -1,0 +1,20 @@
+SP:
+-	SP.Eid: no, non è coprente
+-	Data: no, predicato poco selettivo
+E:
+-	E.Eid: no, non è coprente
+-	Città: forse? predicato molto selettivo, ma non coprente
+-	TipoEdificio: no, predicato poco selettivo
+-	Città + TipoEdificio: forse? Coprente, ma composto
+S: 	no, tabella piccola
+IP:
+-	IP.Pid: no, non è coprente
+-	Regione: no, predicato poco selettivo
+SO:
+-	SO.Sid: sì, coprente, primario (hash)
+
+CONCLUSIONE:
+Si applica indice primario di tipo hash su SO.Sid
+Conseguenze:
+-	index unique scan su SO
+-	GROUP BY NO HASH su SO.Sid

@@ -1,20 +1,25 @@
 SP:
--	SP.Eid: no, non è coprente
+-	SP.Eid: no, è pk
 -	Data: no, predicato poco selettivo
 E:
--	E.Eid: no, non è coprente
--	Città: forse? predicato molto selettivo, ma non coprente
+-	E.Eid: no, è pk
+-	Città: assolutamente sì, non coprente ma il predicato è selettivo
 -	TipoEdificio: no, predicato poco selettivo
--	Città + TipoEdificio: forse? Coprente, ma composto
+-	Città + TipoEdificio: no, coprente ma composto quindi difficile da manutenere
 S: 	no, tabella piccola
 IP:
--	IP.Pid: no, non è coprente
+-	IP.Pid: no, è pk
 -	Regione: no, predicato poco selettivo
 SO:
--	SO.Sid: sì, coprente, primario (hash)
+-	SO.Sid: sì, aiuta il GB(SO.Sid)
 
 CONCLUSIONE:
-Si applica indice primario di tipo hash su SO.Sid
+Si applicano:
+-	indice su E.Città (sicuramente di tipo hash)
+-	indice su SO.Sid (tipo dipendente dal sistema)
 Conseguenze:
--	index unique scan su SO
--	GROUP BY NO HASH su SO.Sid
+-	index range scan su INDEX(E.Città), in quanto predicato di selezione non seguito
+	da merge join e non coprente, + accesso per rowid
+-	GROUP BY su SO.Sid:
+	-	NO HASH se INDEX(SO.Sid) di tipo hash
+	-	HASH altrimenti

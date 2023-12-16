@@ -3,23 +3,21 @@ SP:
 -	Data: no, predicato poco selettivo
 E:
 -	E.Eid: no, è pk
--	Città: assolutamente sì, non coprente ma il predicato è selettivo
+-	Città: sì, non coprente ma il predicato è selettivo
 -	TipoEdificio: no, predicato poco selettivo
--	Città + TipoEdificio: no, coprente ma composto quindi difficile da manutenere
+-	Città + TipoEdificio: no, coprente ma composto quindi difficile da aggiornare
 S: 	no, tabella piccola
 IP:
 -	IP.Pid: no, è pk
 -	Regione: no, predicato poco selettivo
 SO:
--	SO.Sid: sì, aiuta il GB(SO.Sid)
+-	SO.Sid: no, aiuterebbe il group by ma è presente una GROUP BY(Pid) in mezzo,
+		che venendo effettuata con hash join cambia totalmente i bucket creati
+		in lettura
 
 CONCLUSIONE:
 Si applicano:
--	indice su E.Città (sicuramente di tipo hash)
--	indice su SO.Sid (tipo dipendente dal sistema)
+-	indice su E.Città (sicuramente di tipo hash, essendo una stringa)
 Conseguenze:
 -	index range scan su INDEX(E.Città), in quanto predicato di selezione non seguito
-	da merge join e non coprente, + accesso per rowid
--	GROUP BY su SO.Sid:
-	-	NO HASH se INDEX(SO.Sid) di tipo hash
-	-	HASH altrimenti
+	da merge join e non coprente, + accesso alla tabella per rowid

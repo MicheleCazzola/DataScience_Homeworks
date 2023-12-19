@@ -1,6 +1,6 @@
 SP:
 -	SP.Eid: no, è pk
--	Data: no, predicato poco selettivo
+-	Data: sì, predicato selettivo (1/10)
 E:
 -	E.Eid: no, è pk
 -	Città: sì, non coprente ma il predicato è selettivo
@@ -9,15 +9,19 @@ E:
 S: 	no, tabella piccola
 IP:
 -	IP.Pid: no, è pk
--	Regione: no, predicato poco selettivo
+-	Regione: sì, predicato selettivo
 SO:
--	SO.Sid: no, aiuterebbe il group by ma è presente una GROUP BY(Pid) in mezzo,
+-	SO.Sid: no, aiuterebbe il group by ma è presente una JOIN(Pid) in mezzo,
 		che venendo effettuata con hash join cambia totalmente i bucket creati
 		in lettura
 
 CONCLUSIONE:
 Si applicano:
 -	indice su E.Città (sicuramente di tipo hash, essendo una stringa)
+-	indice su SP.Data (B-tree essendo range queries)
+-	indice su IP.Regione (hash essendo predicato di uguaglianza su stringhe)
 Conseguenze:
--	index range scan su INDEX(E.Città), in quanto predicato di selezione non seguito
+-	index range/full scan su INDEX(E.Città), in quanto predicato di selezione non seguito
 	da merge join e non coprente, + accesso alla tabella per rowid
+-	index range/full scan su INDEX(SP.Data) + accesso per rowid
+-	index range/full scan su INDEX(IP.Regione) + accesso per rowid

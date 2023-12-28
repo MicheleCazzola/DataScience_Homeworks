@@ -1,0 +1,315 @@
+/* 
+	Domanda 1 
+	Quante stazioni hanno rispettivamente status (extra.status) “online” e “offline”?  
+
+*/
+
+db.bike_stations.aggregate( 
+	{$match: 
+		{
+			"extra.status": {$in: ["online", "offline"]}
+		}
+	}, 
+	{$group: 
+		{	
+			_id: "$extra.status", 
+			"count": {$sum: 1}
+		}
+	}
+)
+
+/* 
+	Domanda 2 
+	Quante stazioni hanno uno status diverso da “online” e “offline”?
+*/	
+
+db.bike_stations.aggregate( 
+	{$match: 
+		{
+			"extra.status": {$nin: ["online", "offline"]}
+		}
+	}, 
+	{$group: 
+		{	
+			_id: "$extra.status",
+			"count": {$sum: 1}
+		}
+	}
+)
+ 
+/*
+	Domanda 3 
+	Per le stazioni che hanno uno status diverso da “offline” e “online”, visualizzare solo il valore del campo 
+	status. 
+	
+	Volendo mostrare anche _id, si scrive _id:1, oppure si omette
+*/
+
+db.bike_stations.aggregate( 
+	{$match: 
+		{
+			"extra.status": {$nin: ["online", "offline"]}
+		}
+	},
+	{$project:
+		{	
+			"extra.status":1,
+			_id:0
+		}
+	}
+)
+
+/*
+	Domanda 4 
+	Quali sono le stazioni attive (status = online) con una valutazione media (extra.score) maggiore o uguale 
+	a 4? 
+	Estrarre l’elenco dei nomi di queste stazioni, ordinato in ordine alfabetico. 
+*/
+
+db.bike_stations.aggregate(
+	{$match:
+		{
+			"extra.status": {$eq: "online"}
+		}
+	},
+	{$group:
+		{
+			_id: "$name",
+			"avg_score": {$avg: "$extra.score"}
+		}
+	},
+	{$match:
+		{avg_score: {$gte: 4}}
+	},
+	{$project: 
+		{
+			_id: 0,
+			name:"$_id"
+		}
+	},
+	{$sort: {_id: 1}}
+)
+
+/*
+	Domanda 5 
+	Qual  è  il  nome  delle  stazioni  non  attive  (status  =  offline)  che  hanno  almeno  una  postazione  libera 
+	(empty_slots > 0) oppure hanno almeno una bici a disposizione (free_bikes > 0)? Quante postazioni libere e 
+	quante bici sono a disposizione? 
+*/
+
+db.bike_stations.aggregate(
+	{$match:
+		{
+			"extra.status": {$eq: "offline"},
+			$or: [
+				{free_bikes: {$gt: 0}},
+				{empty_slots: {$gt: 0}}
+			]
+		}
+	},
+	{$project:
+		{
+			_id: 0,
+			name:1,
+			free_bikes:1,
+			empty_slots: 1
+		}
+	}
+)
+
+/*
+	Domanda 6 
+	Qual è il numero totale di recensioni (extra.reviews) per tutte le stazioni? 
+*/
+
+db.bike_stations.aggregate(
+	{$group: 
+		{
+			_id: null,
+			total_reviews: {$sum: "$extra.reviews"}
+		}
+	},
+	{$project:
+		{
+			_id:0,
+			total_reviews:1
+		}
+	}
+)
+
+/*
+	Domanda 7 
+	Per  ciascun  valore  di  valutazioni  medie  (score),  quante  sono  le  stazioni  a  cui  è  stata  assegnata  quella 
+	valutazione? Ordinare il risultato per valutazione decrescente. 
+*/
+
+db.bike_stations.aggregate(
+	{$group: 
+		{
+			_id: "$extra.score",
+			num_stations: {$sum: 1}
+		}
+	},
+	{$project: 
+		{
+			_id:0,
+			num_stations:1,
+			score:"$_id"
+		}
+	},
+	{$sort: {score: -1}}
+)
+
+/*
+	Domanda 8 
+	Qual è la valutazione media per le stazioni attive (status = online) e non attive (status = offline)? 
+*/
+
+db.bike_stations.aggregate(
+	{$match:
+		{"extra.status":
+			{$in: ["online", "offline"]}
+		}
+	},
+	{$group:
+		{
+			_id: "$extra.status",
+			avg_score: {$avg: "$extra.score"}
+		}
+	},
+	{$project:
+		{
+			_id:0,
+			status:"$_id",
+			avg_score:1
+		}
+	}
+)
+
+/*
+	Domanda 9 
+	Quali sono le valutazioni medie per le stazioni senza bici (free_bikes = 0) e per quelle con almeno una bici a 
+	disposizione (free_bikes > 0)? 
+	
+	MapReduce non riesce ad essere eseguito (troppo lento?)
+*/
+
+db.bike_stations.aggregate(
+	{$addFields:
+		{
+			category: {
+				$cond: {
+					if: {$eq: ["$free_bikes", 0]},
+					then: "no_free_bikes",
+					else: "has_free_bikes"
+				}
+			}
+		}
+	},
+	{ $group:
+		{
+			_id: "$category",
+			score: {$push: "$extra.score"}
+		}
+	},
+	{$project:
+		{
+			_id:0,
+			category:"$_id",
+			score:1
+		}
+	}
+)
+
+/*
+	Domanda 10 
+	Rispondere alla domanda 9, facendo riferimento solamente alle stazioni attive (status = online). 
+*/
+
+db.bike_stations.aggregate(
+	{$match: 
+		{
+			"extra.status": {$eq: "online"}
+		}
+	},
+	{$addFields:
+		{
+			category: {
+				$cond: {
+					if: {$eq: ["$free_bikes", 0]},
+					then: "no_free_bikes",
+					else: "has_free_bikes"
+				}
+			}
+		}
+	},
+	{ $group:
+		{
+			_id: "$category",
+			score: {$push: "$extra.score"}
+		}
+	},
+	{$project:
+		{
+			_id:0,
+			category:"$_id",
+			score:1
+		}
+	}
+)
+
+/*
+	Domanda 11 
+	Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine al punto [45.07456, 7.69463]? 
+	Quante bici sono disponibili?
+*/
+
+db.bike_stations.aggregate(
+	{$geoNear:
+		{near:
+			{
+				Type: "Point",
+				coordinates: [45.07456, 7.69463]
+			},
+			distanceField: "distance"
+		}
+	},
+	{$match:
+		{free_bikes: {$gt: 0}}
+	},
+	{$limit:3},
+	{$project:
+		{
+			_id:0,
+			name:1,
+			free_bikes:1
+		}
+	}
+)
+
+/*
+	Domanda 12 
+	Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine alla stazione “Politecnico 4”? 
+	Quante bici sono disponibili? 
+*/
+
+db.bike_stations.aggregate(
+	{$geoNear:
+		{near:	
+			db.bike_stations.find(
+				{name: {$eq: "Politecnico 4"}},
+				{_id:0, location:1}
+			).next().location,
+			distanceField: "distance"
+		}
+	},
+	{$match: {free_bikes: {$gt: 0}}},
+	{$limit:3},
+	{$project: 
+		{
+			_id:0,
+			name:1,
+			free_bikes:1
+		}
+	}
+)

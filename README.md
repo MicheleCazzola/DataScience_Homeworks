@@ -42,3 +42,14 @@ Homeworks for "Data science and database technology", a.a. 2023/2024
 21 dicembre 2023   
 **Data di consegna**  
 21 dicembre 2023        
+
+### Quaderno 4: MongoDB
+**Argomenti**
+1. Scrittura di query in MongoDB, mediante shell
+
+**Data di pubblicazione**  
+21 dicembre 2023  
+**Data di scadenza**  
+11 gennaio 2024  
+**Data di consegna**  
+TBD  

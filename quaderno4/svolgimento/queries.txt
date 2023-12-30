@@ -53,7 +53,7 @@ db.bike_stations.aggregate(
 	},
 	{$project:
 		{	
-			"extra.status":1,
+			status: "$extra.status",
 			_id:0
 		}
 	}
@@ -287,6 +287,32 @@ db.bike_stations.aggregate(
 	}
 )
 
+// Alternativa, con find e $near
+db.bike_stations.find(
+	{$and:
+		[
+			{
+				free_bikes: {$gt: 0}
+			},
+			{location:
+				{$near:
+					{$geometry:
+						{
+							type: "Point", 
+							coordinates: [45.07456, 7.69463]
+						}
+					}
+				}
+			}
+		]
+	},
+	{
+		_id:0,
+		name:1,
+		free_bikes:1
+	}
+).limit(3)
+
 /*
 	Domanda 12 
 	Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine alla stazione “Politecnico 4”? 
@@ -313,3 +339,29 @@ db.bike_stations.aggregate(
 		}
 	}
 )
+
+// Alternativa, con find e $near
+db.bike_stations.find(
+	{$and: 
+		[
+			{
+				free_bikes: {$gt: 0}
+			},
+			{location: 
+				{$near: 
+					{$geometry: 
+						db.bike_stations.find(
+							{name: {$eq: "Politecnico 4"}}, 
+							{_id:0,location:1}
+						).next().location 
+					}
+				}
+			}
+		]
+	},
+	{
+		_id:0, 
+		name:1, 
+		free_bikes:1
+	}
+).limit(3)

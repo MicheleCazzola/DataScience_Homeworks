@@ -99,6 +99,7 @@ db.bike_stations.aggregate(
 Quali sono le stazioni attive (status = online) con una valutazione media (extra.score) maggiore o uguale a 4?  
 Estrarre l’elenco dei nomi di queste stazioni, ordinato in ordine alfabetico.
 
+
 **Query**
 
 ```js

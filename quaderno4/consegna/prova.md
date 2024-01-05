@@ -3,7 +3,7 @@ Cazzola Michele s323270
 <h2>Quaderno 4 - MongoDB</h2>
 Rispondere alle seguenti domande con interrogazioni MongoDB, riportando sia l’interrogazione che il suo risultato nel dataset fornito.
 
-#### Domanda 1 
+#### Domanda 1  
 
 
 Quante stazioni hanno rispettivamente status (extra.status) “online” e “offline”?

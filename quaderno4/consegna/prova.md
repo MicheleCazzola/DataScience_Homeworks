@@ -1,13 +1,12 @@
 Cazzola Michele s323270
-<h1>Data Science e Tecnologie per le Basi di Dati</h1>
-<h2>Quaderno 4 - MongoDB</h2>
+# Data Science e Tecnologie per le Basi di Dati
+## Quaderno 4 - MongoDB
 Rispondere alle seguenti domande con interrogazioni MongoDB, riportando sia l’interrogazione che il suo risultato nel dataset fornito.
 
 #### Domanda 1  
+Quante stazioni hanno rispettivamente status (extra.status) “online” e “offline”?  
 
-
-Quante stazioni hanno rispettivamente status (extra.status) “online” e “offline”?
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate( 
@@ -25,7 +24,7 @@ db.bike_stations.aggregate(
 )  
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -34,9 +33,10 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 2</h4>
-Quante stazioni hanno uno status diverso da “online” e “offline”?
-<h6>Query</h6>
+#### Domanda 2
+Quante stazioni hanno uno status diverso da “online” e “offline”?  
+
+**Query**
 
 ```js
 db.bike_stations.aggregate( 
@@ -54,7 +54,7 @@ db.bike_stations.aggregate(
 ) 
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -63,9 +63,10 @@ db.bike_stations.aggregate(
 ```
 
 
-<h4>Domanda 3</h4>
-Per le stazioni che hanno uno status diverso da “offline” e “online”, visualizzare solo il valore del campo status. 
-<h6>Query</h6>
+#### Domanda 3
+Per le stazioni che hanno uno status diverso da “offline” e “online”, visualizzare solo il valore del campo status.  
+
+**Query**
 
 ```js
 db.bike_stations.aggregate( 
@@ -83,7 +84,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [ 	
@@ -94,10 +95,10 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 4</h4>
+#### Domanda 4
 Quali sono le stazioni attive (status = online) con una valutazione media (extra.score) maggiore o uguale a 4?<br>
 Estrarre l’elenco dei nomi di queste stazioni, ordinato in ordine alfabetico. 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -125,7 +126,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -150,11 +151,11 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 5</h4>
+#### Domanda 5
 Qual  è  il  nome  delle  stazioni  non  attive  (status  =  offline)  che  hanno  almeno  una  postazione  libera 
 (empty_slots > 0) oppure hanno almeno una bici a disposizione (free_bikes > 0)? Quante postazioni libere e 
 quante bici sono a disposizione? 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -178,7 +179,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -187,9 +188,9 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 6</h4>
+#### Domanda 6
 Qual è il numero totale di recensioni (extra.reviews) per tutte le stazioni? 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -208,7 +209,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -216,10 +217,10 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 7</h4>
+#### Domanda 7
 Per  ciascun  valore  di  valutazioni  medie  (score),  quante  sono  le  stazioni  a  cui  è  stata  assegnata  quella 
 valutazione? Ordinare il risultato per valutazione decrescente. 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -240,7 +241,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -271,9 +272,9 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 8</h4>
+#### Domanda 8
 Qual è la valutazione media per le stazioni attive (status = online) e non attive (status = offline)? 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -298,7 +299,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -307,10 +308,10 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 9</h4>
+#### Domanda 9
 Quali sono le valutazioni medie per le stazioni senza bici (free_bikes = 0) e per quelle con almeno una bici a 
 disposizione (free_bikes > 0)? 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -341,7 +342,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -367,9 +368,9 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 10</h4>
+#### Domanda 10
 Rispondere alla domanda 9, facendo riferimento solamente alle stazioni attive (status = online). 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.aggregate(
@@ -405,7 +406,7 @@ db.bike_stations.aggregate(
 )
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -425,10 +426,10 @@ db.bike_stations.aggregate(
 ]
 ```
 
-<h4>Domanda 11</h4>
+#### Domanda 11
 Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine al punto [45.07456, 7.69463]? 
 Quante bici sono disponibili?  
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.find(
@@ -457,7 +458,7 @@ db.bike_stations.find(
 ).limit(3)
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [
@@ -467,10 +468,10 @@ db.bike_stations.find(
 ]
 ```
 
-<h4>Domanda 12</h4>
+#### Domanda 12
 Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine alla stazione “Politecnico 4”? 
 Quante bici sono disponibili? 
-<h6>Query</h6>
+**Query**
 
 ```js
 db.bike_stations.find(
@@ -499,7 +500,7 @@ db.bike_stations.find(
 ).limit(3)
 ```
 
-<h6>Risultato</h6>
+**Risultato**
 
 ```js
 [

@@ -5,6 +5,7 @@ Rispondere alle seguenti domande con interrogazioni MongoDB, riportando sia l’
 
 #### Domanda 1 
 
+
 Quante stazioni hanno rispettivamente status (extra.status) “online” e “offline”?
 <h6>Query</h6>
 

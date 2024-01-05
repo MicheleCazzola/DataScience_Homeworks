@@ -3,7 +3,7 @@ Cazzola Michele s323270
 ## Quaderno 4 - MongoDB
 Rispondere alle seguenti domande con interrogazioni MongoDB, riportando sia l’interrogazione che il suo risultato nel dataset fornito.
 
-#### Domanda 1  
+### Domanda 1  
 Quante stazioni hanno rispettivamente status (extra.status) “online” e “offline”?  
 
 **Query**
@@ -33,7 +33,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 2
+### Domanda 2
 Quante stazioni hanno uno status diverso da “online” e “offline”?  
 
 **Query**
@@ -63,7 +63,7 @@ db.bike_stations.aggregate(
 ```
 
 
-#### Domanda 3
+### Domanda 3
 Per le stazioni che hanno uno status diverso da “offline” e “online”, visualizzare solo il valore del campo status.  
 
 **Query**
@@ -95,7 +95,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 4
+### Domanda 4
 Quali sono le stazioni attive (status = online) con una valutazione media (extra.score) maggiore o uguale a 4?<br>
 Estrarre l’elenco dei nomi di queste stazioni, ordinato in ordine alfabetico. 
 **Query**
@@ -151,7 +151,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 5
+### Domanda 5
 Qual  è  il  nome  delle  stazioni  non  attive  (status  =  offline)  che  hanno  almeno  una  postazione  libera 
 (empty_slots > 0) oppure hanno almeno una bici a disposizione (free_bikes > 0)? Quante postazioni libere e 
 quante bici sono a disposizione? 
@@ -188,7 +188,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 6
+### Domanda 6
 Qual è il numero totale di recensioni (extra.reviews) per tutte le stazioni? 
 **Query**
 
@@ -217,7 +217,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 7
+### Domanda 7
 Per  ciascun  valore  di  valutazioni  medie  (score),  quante  sono  le  stazioni  a  cui  è  stata  assegnata  quella 
 valutazione? Ordinare il risultato per valutazione decrescente. 
 **Query**
@@ -272,7 +272,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 8
+### Domanda 8
 Qual è la valutazione media per le stazioni attive (status = online) e non attive (status = offline)? 
 **Query**
 
@@ -308,7 +308,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 9
+### Domanda 9
 Quali sono le valutazioni medie per le stazioni senza bici (free_bikes = 0) e per quelle con almeno una bici a 
 disposizione (free_bikes > 0)? 
 **Query**
@@ -368,7 +368,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 10
+### Domanda 10
 Rispondere alla domanda 9, facendo riferimento solamente alle stazioni attive (status = online). 
 **Query**
 
@@ -426,7 +426,7 @@ db.bike_stations.aggregate(
 ]
 ```
 
-#### Domanda 11
+### Domanda 11
 Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine al punto [45.07456, 7.69463]? 
 Quante bici sono disponibili?  
 **Query**
@@ -468,7 +468,7 @@ db.bike_stations.find(
 ]
 ```
 
-#### Domanda 12
+### Domanda 12
 Quali sono i nomi delle 3 stazioni con bici disponibili (free_bikes > 0) più vicine alla stazione “Politecnico 4”? 
 Quante bici sono disponibili? 
 **Query**

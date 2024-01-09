@@ -315,20 +315,15 @@ disposizione (free_bikes > 0)?
 
 ```js
 db.bike_stations.aggregate(
-	{$addFields:
+	{ $group:
 		{
-			category: {
+			_id: {
 				$cond: {
 					if: {$eq: ["$free_bikes", 0]},
 					then: "no_free_bikes",
 					else: "has_free_bikes"
 				}
-			}
-		}
-	},
-	{$group:
-		{
-			_id: "$category",
+			},
 			score: {$push: "$extra.score"}
 		}
 	},
@@ -380,20 +375,15 @@ db.bike_stations.aggregate(
 			"extra.status": {$eq: "online"}
 		}
 	},
-	{$addFields:
+	{ $group:
 		{
-			category: {
+			_id: {
 				$cond: {
 					if: {$eq: ["$free_bikes", 0]},
 					then: "no_free_bikes",
 					else: "has_free_bikes"
 				}
-			}
-		}
-	},
-	{$group:
-		{
-			_id: "$category",
+			},
 			score: {$push: "$extra.score"}
 		}
 	},

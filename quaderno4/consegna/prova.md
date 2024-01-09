@@ -39,27 +39,22 @@ Quante stazioni hanno uno status diverso da “online” e “offline”?
 **Query**
 
 ```js
-db.bike_stations.aggregate( 
-	{$match: 
-		{
-			"extra.status": {$nin: ["online", "offline"]}
-		}
-	}, 
-	{$group: 
-		{	
-			_id: "$extra.status",
-			"count": {$sum: 1}
-		}
+db.bike_stations.find(
+	{ "extra.status": 
+		{ $nin: 
+			[
+				"online",
+				"offline"
+			] 
+		} 
 	}
-) 
+).count()
 ```
 
 **Risultato**
 
 ```js
-[
-  { _id: 'maintenance', count: 4 }
-]
+4
 ```
 
 
@@ -124,7 +119,7 @@ db.bike_stations.aggregate(
 			name:"$_id"
 		}
 	},
-	{$sort: {_id: 1}}
+	{$sort: {name: 1}}
 )
 ```
 
@@ -132,24 +127,24 @@ db.bike_stations.aggregate(
 
 ```js
 [
-	{ name: '02. Pettiti' },
-	{ name: 'Borromini' },
-	{ name: 'Principi d`Acaja 1' },
-	{ name: 'Porta Palatina' },
-	{ name:'06. Municipio' },
-	{ name:'Politecnico 3' },
-	{ name: '04. Reggia' },
-	{ name: 'Principi d`Acaja 2' },
-	{ name: '10. Gallo Praile' },
-	{ name: 'Corte d`Appello' },
-	{ name: 'Belfiore' },
-	{ name:'Giolitti 1' },
-	{ name:'Politecnico 1' },
-	{ name: 'Castello 1' },
-	{ name: 'San Francesco da Paola' },
-	{ name: 'Sant´Anselmo' },
-	{ name: '08. San Marchese' },
-	{ name: 'Tribunale' }
+  { name: '02. Pettiti' },
+  { name: '04. Reggia' },
+  { name: '06. Municipio' },
+  { name: '08. San Marchese' },
+  { name: '10. Gallo Praile' },
+  { name: 'Belfiore' },
+  { name: 'Borromini' },
+  { name: 'Castello 1' },
+  { name: 'Corte d`Appello' },
+  { name: 'Giolitti 1' },
+  { name: 'Politecnico 1' },
+  { name: 'Politecnico 3' },
+  { name: 'Porta Palatina' },
+  { name: 'Principi d`Acaja 1' },
+  { name: 'Principi d`Acaja 2' },
+  { name: 'San Francesco da Paola' },
+  { name: 'Sant´Anselmo' },
+  { name: 'Tribunale' }
 ]
 ```
 
@@ -210,15 +205,13 @@ db.bike_stations.aggregate(
 			total_reviews:1
 		}
 	}
-)
+).next().total_reviews
 ```
 
 **Risultato**
 
 ```js
-[
-  { total_reviews: 15311 }
-]
+15311
 ```
 
 ### Domanda 7

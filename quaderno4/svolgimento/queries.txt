@@ -23,19 +23,16 @@ db.bike_stations.aggregate(
 	Quante stazioni hanno uno status diverso da “online” e “offline”?
 */	
 
-db.bike_stations.aggregate( 
-	{$match: 
-		{
-			"extra.status": {$nin: ["online", "offline"]}
-		}
-	}, 
-	{$group: 
-		{	
-			_id: "$extra.status",
-			"count": {$sum: 1}
-		}
+db.bike_stations.find(
+	{ "extra.status": 
+		{ $nin: 
+			[
+				"online",
+				"offline"
+			] 
+		} 
 	}
-)
+).count()
  
 /*
 	Domanda 3 
@@ -87,7 +84,7 @@ db.bike_stations.aggregate(
 			name:"$_id"
 		}
 	},
-	{$sort: {_id: 1}}
+	{$sort: {name: 1}}
 )
 
 /*
@@ -135,7 +132,7 @@ db.bike_stations.aggregate(
 			total_reviews:1
 		}
 	}
-)
+).next().total_reviews
 
 /*
 	Domanda 7 
@@ -195,20 +192,15 @@ db.bike_stations.aggregate(
 */
 
 db.bike_stations.aggregate(
-	{$addFields:
+	{ $group:
 		{
-			category: {
+			_id: {
 				$cond: {
 					if: {$eq: ["$free_bikes", 0]},
 					then: "no_free_bikes",
 					else: "has_free_bikes"
 				}
-			}
-		}
-	},
-	{ $group:
-		{
-			_id: "$category",
+			},
 			score: {$push: "$extra.score"}
 		}
 	},
@@ -232,20 +224,15 @@ db.bike_stations.aggregate(
 			"extra.status": {$eq: "online"}
 		}
 	},
-	{$addFields:
+	{ $group:
 		{
-			category: {
+			_id: {
 				$cond: {
 					if: {$eq: ["$free_bikes", 0]},
 					then: "no_free_bikes",
 					else: "has_free_bikes"
 				}
-			}
-		}
-	},
-	{ $group:
-		{
-			_id: "$category",
+			},
 			score: {$push: "$extra.score"}
 		}
 	},
